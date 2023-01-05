@@ -1,0 +1,17 @@
+{
+	"name": "sinkdatasetforzip",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "gen2forzipls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "sampledata"
+			}
+		}
+	}
+}

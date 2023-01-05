@@ -1,0 +1,21 @@
+{
+	"name": "zipdatasetforunzip",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FileServerfounzip",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": "sampledata.zip"
+			},
+			"compression": {
+				"type": "ZipDeflate",
+				"level": "Optimal"
+			}
+		}
+	}
+}
