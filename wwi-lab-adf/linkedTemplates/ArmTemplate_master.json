@@ -1,0 +1,91 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "wwi-lab-adf"
+		},
+		"wwisftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'wwisftp'"
+		},
+		"AzureSqlDatabasels_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "wwi-lab-sqldb"
+		},
+		"HttpServerSmartFoodAPI_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://smartfoods.azurewebsites.net/api/"
+		},
+		"wwiazurekeyvault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://wwi-keyvault.vault.azure.net/"
+		},
+		"wwilabblob_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "wwilabstorageconnectionstring"
+		},
+		"wwisftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "20.253.48.64"
+		},
+		"wwisftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sftpuser"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "wwi-lab-adf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"wwisftp_password": {
+						"value": "[parameters('wwisftp_password')]"
+					},
+					"HttpServerSmartFoodAPI_properties_typeProperties_url": {
+						"value": "[parameters('HttpServerSmartFoodAPI_properties_typeProperties_url')]"
+					},
+					"wwiazurekeyvault_properties_typeProperties_baseUrl": {
+						"value": "[parameters('wwiazurekeyvault_properties_typeProperties_baseUrl')]"
+					},
+					"AzureSqlDatabasels_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('AzureSqlDatabasels_properties_typeProperties_connectionString_secretName')]"
+					},
+					"wwilabblob_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('wwilabblob_properties_typeProperties_connectionString_secretName')]"
+					},
+					"wwisftp_properties_typeProperties_host": {
+						"value": "[parameters('wwisftp_properties_typeProperties_host')]"
+					},
+					"wwisftp_properties_typeProperties_userName": {
+						"value": "[parameters('wwisftp_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

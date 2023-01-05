@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "wwi-lab-adf"
+		},
+		"wwisftp_password": {
+			"value": ""
+		},
+		"AzureSqlDatabasels_properties_typeProperties_connectionString_secretName": {
+			"value": "wwi-lab-sqldb"
+		},
+		"HttpServerSmartFoodAPI_properties_typeProperties_url": {
+			"value": "https://smartfoods.azurewebsites.net/api/"
+		},
+		"wwiazurekeyvault_properties_typeProperties_baseUrl": {
+			"value": "https://wwi-keyvault.vault.azure.net/"
+		},
+		"wwilabblob_properties_typeProperties_connectionString_secretName": {
+			"value": "wwilabstorageconnectionstring"
+		},
+		"wwisftp_properties_typeProperties_host": {
+			"value": "20.253.48.64"
+		},
+		"wwisftp_properties_typeProperties_userName": {
+			"value": "sftpuser"
+		}
+	}
+}
