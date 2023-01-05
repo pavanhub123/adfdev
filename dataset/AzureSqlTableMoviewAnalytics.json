@@ -1,0 +1,17 @@
+{
+	"name": "AzureSqlTableMoviewAnalytics",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabaseAdventureLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "MoviesAnalytics"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

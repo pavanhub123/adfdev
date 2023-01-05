@@ -1,0 +1,74 @@
+{
+	"name": "MoviesExistTransformation",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesDB",
+						"type": "DatasetReference"
+					},
+					"name": "ExistTransformation"
+				},
+				{
+					"dataset": {
+						"referenceName": "MoviesDBcopy",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesExistCopyTransformation"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "MoviesExistSink",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesExistTransformationSink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "exists"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          genres as string,",
+				"          year as string,",
+				"          Rating as string,",
+				"          {Rotton Tomato} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> ExistTransformation",
+				"source(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          genres as string,",
+				"          year as string,",
+				"          Rating as string,",
+				"          {Rotton Tomato} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> MoviesExistCopyTransformation",
+				"ExistTransformation, MoviesExistCopyTransformation exists(ExistTransformation@movie == MoviesExistCopyTransformation@movie,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> exists",
+				"exists sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['MoviesExistTransformation.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> MoviesExistTransformationSink"
+			]
+		}
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"name": "adf_lab_akv_linkedser",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://adf-pavan-dev-kv1.vault.azure.net/"
+		}
+	}
+}

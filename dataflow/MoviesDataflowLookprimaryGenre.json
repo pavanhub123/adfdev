@@ -1,0 +1,78 @@
+{
+	"name": "MoviesDataflowLookprimaryGenre",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesDB",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesDB"
+				},
+				{
+					"dataset": {
+						"referenceName": "PrimaryGenreDatset",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesDBPrimaryGenre"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "PrimarygenreSink",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesDBPrimaryGenreSink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "LookUPPrimarygenre"
+				},
+				{
+					"name": "filterExpression"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          genres as string,",
+				"          year as string,",
+				"          Rating as string,",
+				"          {Rotton Tomato} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> MoviesDB",
+				"source(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          year as string,",
+				"          Rating as string,",
+				"          {Rotton Tomato} as string,",
+				"          PrimaryGenre as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> MoviesDBPrimaryGenre",
+				"MoviesDB, MoviesDBPrimaryGenre lookup(genres === PrimaryGenre,",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> LookUPPrimarygenre",
+				"LookUPPrimarygenre filter(!isNull(PrimaryGenre)) ~> filterExpression",
+				"filterExpression sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['MoviesDBPrimarygenre.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> MoviesDBPrimaryGenreSink"
+			]
+		}
+	}
+}

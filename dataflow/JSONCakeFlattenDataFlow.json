@@ -1,0 +1,81 @@
+{
+	"name": "JSONCakeFlattenDataFlow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "JsonCakeDs",
+						"type": "DatasetReference"
+					},
+					"name": "sourceJSON"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "CakeJSONSinkDataSet",
+						"type": "DatasetReference"
+					},
+					"name": "sinkCakeJSON"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flattenCake"
+				},
+				{
+					"name": "flattencakefi"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          type as string,",
+				"          name as string,",
+				"          ppu as double,",
+				"          batters as (batter as (id as string, type as string)[]),",
+				"          topping as (id as string, type as string)[]",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> sourceJSON",
+				"sourceJSON foldDown(unroll(topping, topping),",
+				"     mapColumn(",
+				"          id,",
+				"          type,",
+				"          name,",
+				"          ppu,",
+				"          topping,",
+				"          batter = batters.batter",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flattenCake",
+				"flattenCake foldDown(unroll(batter, batter),",
+				"     mapColumn(",
+				"          id,",
+				"          name,",
+				"          ppu,",
+				"          toppingID = topping.id,",
+				"          type,",
+				"          toppingtype = topping.type,",
+				"          batterId = batter.id,",
+				"          battertype = batter.type",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flattencakefi",
+				"flattencakefi sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['cakeflatten.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkCakeJSON"
+			]
+		}
+	}
+}
