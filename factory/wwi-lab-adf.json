@@ -1,0 +1,9 @@
+{
+	"name": "wwi-lab-adf",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "4a3136b7-fdce-452a-97d8-c316151c1bf7",
+		"tenantId": "10f8383d-6c67-407f-b0df-134f293f06df"
+	}
+}

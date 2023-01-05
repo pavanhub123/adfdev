@@ -1,0 +1,11 @@
+{
+	"name": "wwiazurekeyvault",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://wwi-keyvault.vault.azure.net/"
+		}
+	}
+}

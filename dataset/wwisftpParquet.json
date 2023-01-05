@@ -1,0 +1,32 @@
+{
+	"name": "wwisftpParquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "wwisftp",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"folder": {
+				"type": "string"
+			},
+			"filename": {
+				"type": "string"
+			},
+			"filetype": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "SftpLocation",
+				"fileName": "orderlines_2019-02-06.parquet",
+				"folderPath": "/upload/orderlines"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

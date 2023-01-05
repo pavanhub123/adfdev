@@ -1,0 +1,22 @@
+{
+	"name": "wwilabblob",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "wwiazurekeyvault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "wwilabstorageconnectionstring"
+			}
+		},
+		"connectVia": {
+			"referenceName": "wwilabintegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
