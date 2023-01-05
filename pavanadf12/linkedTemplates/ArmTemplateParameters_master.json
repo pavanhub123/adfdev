@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "pavanadf12"
+		},
+		"ADLSGen2_accountKey": {
+			"value": ""
+		},
+		"AzureSqlDatabaseAdventureLS_connectionString": {
+			"value": ""
+		},
+		"AzureSqlproductLs_connectionString": {
+			"value": ""
+		},
+		"ADLSGen2_properties_typeProperties_url": {
+			"value": "https://pavangen2.dfs.core.windows.net/"
+		},
+		"adf_lab_akv_linkedser_properties_typeProperties_baseUrl": {
+			"value": "https://adf-pavan-dev-kv1.vault.azure.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

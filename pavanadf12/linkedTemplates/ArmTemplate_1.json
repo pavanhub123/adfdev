@@ -1,0 +1,1248 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "pavanadf12"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/PrimarygenreSink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "output2812",
+						"fileSystem": "sampledata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SinkMSFTds')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "output01022023",
+						"fileSystem": "sampledata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Car_id",
+						"type": "String"
+					},
+					{
+						"name": "Model",
+						"type": "String"
+					},
+					{
+						"name": "Colour",
+						"type": "String"
+					},
+					{
+						"name": "json_value",
+						"type": "String"
+					},
+					{
+						"name": "locationId",
+						"type": "String"
+					},
+					{
+						"name": "locationregion",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demoJson')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "flattenJSONDoc.json",
+						"fileSystem": "sampledata"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"location": {
+							"type": "string"
+						},
+						"satellites": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"goods": {
+							"type": "object",
+							"properties": {
+								"trade": {
+									"type": "boolean"
+								},
+								"customers": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"orders": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"orderId": {
+												"type": "integer"
+											},
+											"orderTotal": {
+												"type": "number"
+											},
+											"shipped": {
+												"type": "object",
+												"properties": {
+													"orderItems": {
+														"type": "array",
+														"items": {
+															"type": "object",
+															"properties": {
+																"itemName": {
+																	"type": "string"
+																},
+																"itemQty": {
+																	"type": "integer"
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pivotproductdatset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "output2812",
+						"fileSystem": "sampledata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sinkStringifydsJson2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "output01022023",
+						"fileSystem": "sampledata"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/splitbefore1960')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "output",
+						"fileSystem": "sampledata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/splitmovies1960and1980')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "output",
+						"fileSystem": "sampledata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/splitmoviesafter')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "output",
+						"fileSystem": "sampledata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/windowtransformatiods')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "output2912",
+						"fileSystem": "sampledata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DemoParseCarData')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "CarsParseDataset",
+								"type": "DatasetReference"
+							},
+							"name": "CarsData"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Cars_Parse_CSV_ds",
+								"type": "DatasetReference"
+							},
+							"name": "ParseCarsSink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "parseJSONFromCars"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Car_id as short,",
+						"          Model as string,",
+						"          Colour as string,",
+						"          json_value as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> CarsData",
+						"CarsData parse(locationandregion = json_value ? (locationid as integer,",
+						"          region as string),",
+						"     format: 'json',",
+						"     documentForm: 'singleDocument') ~> parseJSONFromCars",
+						"parseJSONFromCars sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['Carsdata.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          Car_id,",
+						"          Model,",
+						"          Colour,",
+						"          json_value,",
+						"          locationId = locationandregion.locationid,",
+						"          locationregion = locationandregion.region",
+						"     ),",
+						"     partitionBy('hash', 1)) ~> ParseCarsSink"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FilterandDerivedColumns')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDB",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesDB"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDBFilterAndDerivedSink",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesDBSinkderivedcolumn"
+						}
+					],
+					"transformations": [
+						{
+							"name": "RenameColumnRottonTomato"
+						},
+						{
+							"name": "FilterYearBefore1951"
+						},
+						{
+							"name": "DerivedPrimaryGenre"
+						},
+						{
+							"name": "DropUnwantedColumn"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          movie as integer,",
+						"          title as string,",
+						"          genres as string,",
+						"          year as short,",
+						"          Rating as short,",
+						"          {Rotton Tomato} as short",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> MoviesDB",
+						"MoviesDB select(mapColumn(",
+						"          movie,",
+						"          title,",
+						"          genres,",
+						"          year,",
+						"          Rating,",
+						"          {Rotten Tomato} = {Rotton Tomato}",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> RenameColumnRottonTomato",
+						"RenameColumnRottonTomato filter((year) >1951) ~> FilterYearBefore1951",
+						"FilterYearBefore1951 derive(PrimaryGenre = iif(locate('|',genres)>1, left(genres,locate('|',genres)-1), genres)) ~> DerivedPrimaryGenre",
+						"DerivedPrimaryGenre select(mapColumn(",
+						"          movie,",
+						"          title,",
+						"          year,",
+						"          Rating,",
+						"          {Rotten Tomato},",
+						"          PrimaryGenre",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DropUnwantedColumn",
+						"DropUnwantedColumn sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['moviesderivedcolumn.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> MoviesDBSinkderivedcolumn"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FilterandDerivedColumns_WindowTransformation')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDB",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesDB"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "windowtransformatiods",
+								"type": "DatasetReference"
+							},
+							"name": "WindowTransformatioMoviesDBSinkderivedcolumn"
+						}
+					],
+					"transformations": [
+						{
+							"name": "RenameColumnRottonTomato"
+						},
+						{
+							"name": "DerivedPrimaryGenre"
+						},
+						{
+							"name": "DropUnwantedColumn"
+						},
+						{
+							"name": "WindowTransformationRankingaccordingToGenre"
+						},
+						{
+							"name": "AggregateRating"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          movie as integer,",
+						"          title as string,",
+						"          genres as string,",
+						"          year as short,",
+						"          Rating as short,",
+						"          {Rotton Tomato} as short",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> MoviesDB",
+						"MoviesDB select(mapColumn(",
+						"          movie,",
+						"          title,",
+						"          genres,",
+						"          year,",
+						"          Rating,",
+						"          {Rotten Tomato} = {Rotton Tomato}",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> RenameColumnRottonTomato",
+						"RenameColumnRottonTomato derive(PrimaryGenre = iif(locate('|',genres)>1, left(genres,locate('|',genres)-1), genres)) ~> DerivedPrimaryGenre",
+						"DerivedPrimaryGenre select(mapColumn(",
+						"          movie,",
+						"          title,",
+						"          year,",
+						"          Rating,",
+						"          {Rotten Tomato},",
+						"          PrimaryGenre",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DropUnwantedColumn",
+						"DropUnwantedColumn window(over(PrimaryGenre,",
+						"          year),",
+						"     asc({Rotten Tomato}, false),",
+						"     RatingRank = rank()) ~> WindowTransformationRankingaccordingToGenre",
+						"WindowTransformationRankingaccordingToGenre aggregate(groupBy(PrimaryGenre,",
+						"          year),",
+						"     AverageRating = avg({Rotten Tomato}),",
+						"          HighestRated = first(title),",
+						"          LowestRated = last(title),",
+						"          NumberOfMovies = count()) ~> AggregateRating",
+						"AggregateRating sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['MoviesWindowTransformationAggregateRating.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> WindowTransformatioMoviesDBSinkderivedcolumn"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/windowtransformatiods')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FilterandDerivedColumns_WindowTransformation_AlterRows')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDB",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesDB"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTableMoviewAnalytics",
+								"type": "DatasetReference"
+							},
+							"name": "AlterRowSink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "RenameColumnRottonTomato"
+						},
+						{
+							"name": "DerivedPrimaryGenre"
+						},
+						{
+							"name": "DropUnwantedColumn"
+						},
+						{
+							"name": "WindowTransformationRankingaccordingToGenre"
+						},
+						{
+							"name": "AggregateRating"
+						},
+						{
+							"name": "UpsertIfTrue"
+						},
+						{
+							"name": "MoviesIDSurrogatekey"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          movie as integer,",
+						"          title as string,",
+						"          genres as string,",
+						"          year as short,",
+						"          Rating as short,",
+						"          {Rotton Tomato} as short",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> MoviesDB",
+						"MoviesDB select(mapColumn(",
+						"          movie,",
+						"          title,",
+						"          genres,",
+						"          year,",
+						"          Rating,",
+						"          {Rotten Tomato} = {Rotton Tomato}",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> RenameColumnRottonTomato",
+						"RenameColumnRottonTomato derive(PrimaryGenre = iif(locate('|',genres)>1, left(genres,locate('|',genres)-1), genres)) ~> DerivedPrimaryGenre",
+						"DerivedPrimaryGenre select(mapColumn(",
+						"          movie,",
+						"          title,",
+						"          year,",
+						"          Rating,",
+						"          {Rotten Tomato},",
+						"          PrimaryGenre",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DropUnwantedColumn",
+						"DropUnwantedColumn window(over(PrimaryGenre,",
+						"          year),",
+						"     asc({Rotten Tomato}, false),",
+						"     RatingRank = rank()) ~> WindowTransformationRankingaccordingToGenre",
+						"WindowTransformationRankingaccordingToGenre aggregate(groupBy(PrimaryGenre,",
+						"          year),",
+						"     AverageRating = avg({Rotten Tomato}),",
+						"          HighestRated = first(title),",
+						"          LowestRated = last(title),",
+						"          NumberOfMovies = count()) ~> AggregateRating",
+						"AggregateRating alterRow(upsertIf(true())) ~> UpsertIfTrue",
+						"UpsertIfTrue keyGenerate(output(moviesID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> MoviesIDSurrogatekey",
+						"MoviesIDSurrogatekey sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:true,",
+						"     keys:['PrimaryGenre','year'],",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> AlterRowSink"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/JSONCakeFlattenDataFlow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "JsonCakeDs",
+								"type": "DatasetReference"
+							},
+							"name": "sourceJSON"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "CakeJSONSinkDataSet",
+								"type": "DatasetReference"
+							},
+							"name": "sinkCakeJSON"
+						}
+					],
+					"transformations": [
+						{
+							"name": "flattenCake"
+						},
+						{
+							"name": "flattencakefi"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          id as string,",
+						"          type as string,",
+						"          name as string,",
+						"          ppu as double,",
+						"          batters as (batter as (id as string, type as string)[]),",
+						"          topping as (id as string, type as string)[]",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     documentForm: 'arrayOfDocuments') ~> sourceJSON",
+						"sourceJSON foldDown(unroll(topping, topping),",
+						"     mapColumn(",
+						"          id,",
+						"          type,",
+						"          name,",
+						"          ppu,",
+						"          topping,",
+						"          batter = batters.batter",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> flattenCake",
+						"flattenCake foldDown(unroll(batter, batter),",
+						"     mapColumn(",
+						"          id,",
+						"          name,",
+						"          ppu,",
+						"          toppingID = topping.id,",
+						"          type,",
+						"          toppingtype = topping.type,",
+						"          batterId = batter.id,",
+						"          battertype = batter.type",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> flattencakefi",
+						"flattencakefi sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['cakeflatten.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sinkCakeJSON"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MoviesConditionalSplit')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDB",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesDataBase"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "splitbefore1960",
+								"type": "DatasetReference"
+							},
+							"name": "Conditionalsplitsink"
+						},
+						{
+							"dataset": {
+								"referenceName": "splitmovies1960and1980",
+								"type": "DatasetReference"
+							},
+							"name": "sinkmovies1960and1980"
+						},
+						{
+							"dataset": {
+								"referenceName": "splitmoviesafter",
+								"type": "DatasetReference"
+							},
+							"name": "sinkmoviesafter"
+						}
+					],
+					"transformations": [
+						{
+							"name": "ConditionalSplit"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          movie as string,",
+						"          title as string,",
+						"          genres as string,",
+						"          year as short,",
+						"          Rating as short,",
+						"          {Rotton Tomato} as short",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> MoviesDataBase",
+						"MoviesDataBase split(year <1960,",
+						"     year <1960 && year <1980,",
+						"     disjoint: false) ~> ConditionalSplit@(moviesbefore1960, moviesbefore1960and1980, Moviesafter)",
+						"ConditionalSplit@moviesbefore1960 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['moviesbefore1960.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Conditionalsplitsink",
+						"ConditionalSplit@moviesbefore1960and1980 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['movies1960and1980.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sinkmovies1960and1980",
+						"ConditionalSplit@Moviesafter sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['moviesafter.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sinkmoviesafter"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/splitbefore1960')]",
+				"[concat(variables('factoryId'), '/datasets/splitmovies1960and1980')]",
+				"[concat(variables('factoryId'), '/datasets/splitmoviesafter')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MoviesDataflowLookprimaryGenre')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDB",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesDB"
+						},
+						{
+							"dataset": {
+								"referenceName": "PrimaryGenreDatset",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesDBPrimaryGenre"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "PrimarygenreSink",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesDBPrimaryGenreSink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "LookUPPrimarygenre"
+						},
+						{
+							"name": "filterExpression"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          movie as string,",
+						"          title as string,",
+						"          genres as string,",
+						"          year as string,",
+						"          Rating as string,",
+						"          {Rotton Tomato} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> MoviesDB",
+						"source(output(",
+						"          movie as string,",
+						"          title as string,",
+						"          year as string,",
+						"          Rating as string,",
+						"          {Rotton Tomato} as string,",
+						"          PrimaryGenre as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> MoviesDBPrimaryGenre",
+						"MoviesDB, MoviesDBPrimaryGenre lookup(genres === PrimaryGenre,",
+						"     multiple: true,",
+						"     broadcast: 'auto')~> LookUPPrimarygenre",
+						"LookUPPrimarygenre filter(!isNull(PrimaryGenre)) ~> filterExpression",
+						"filterExpression sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['MoviesDBPrimarygenre.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> MoviesDBPrimaryGenreSink"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/PrimarygenreSink')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MoviesExistTransformation')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDB",
+								"type": "DatasetReference"
+							},
+							"name": "ExistTransformation"
+						},
+						{
+							"dataset": {
+								"referenceName": "MoviesDBcopy",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesExistCopyTransformation"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "MoviesExistSink",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesExistTransformationSink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "exists"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          movie as string,",
+						"          title as string,",
+						"          genres as string,",
+						"          year as string,",
+						"          Rating as string,",
+						"          {Rotton Tomato} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> ExistTransformation",
+						"source(output(",
+						"          movie as string,",
+						"          title as string,",
+						"          genres as string,",
+						"          year as string,",
+						"          Rating as string,",
+						"          {Rotton Tomato} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> MoviesExistCopyTransformation",
+						"ExistTransformation, MoviesExistCopyTransformation exists(ExistTransformation@movie == MoviesExistCopyTransformation@movie,",
+						"     negate:false,",
+						"     broadcast: 'auto')~> exists",
+						"exists sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['MoviesExistTransformation.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> MoviesExistTransformationSink"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MoviesTransform')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDB",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesDB"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "MoviesSink",
+								"type": "DatasetReference"
+							},
+							"name": "sink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "FiltersYears"
+						},
+						{
+							"name": "AggregateComedyRatings"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          movie as string,",
+						"          title as string,",
+						"          genres as string,",
+						"          year as string,",
+						"          Rating as string,",
+						"          {Rotton Tomato} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> MoviesDB",
+						"MoviesDB filter(toInteger(year) >= 1910 && toInteger(year) <= 2000 && rlike(genres, 'Comedy')) ~> FiltersYears",
+						"FiltersYears aggregate(groupBy(year),",
+						"     Rating = avg(toInteger(Rating))) ~> AggregateComedyRatings",
+						"AggregateComedyRatings sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ProductPivotdataflow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "AzureSqlProductDS",
+								"type": "DatasetReference"
+							},
+							"name": "SourceProduct"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "pivotproductdatset",
+								"type": "DatasetReference"
+							},
+							"name": "ProductSink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "PivotSize"
+						},
+						{
+							"name": "derivedColumnNull"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ProductID as integer,",
+						"          Name as string,",
+						"          ProductNumber as string,",
+						"          Color as string,",
+						"          StandardCost as decimal(19,4),",
+						"          ListPrice as decimal(19,4),",
+						"          Size as string,",
+						"          Weight as decimal(8,2),",
+						"          ProductCategoryID as integer,",
+						"          ProductModelID as integer,",
+						"          SellStartDate as timestamp,",
+						"          SellEndDate as timestamp,",
+						"          DiscontinuedDate as timestamp,",
+						"          ThumbNailPhoto as binary,",
+						"          ThumbnailPhotoFileName as string,",
+						"          rowguid as string,",
+						"          ModifiedDate as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> SourceProduct",
+						"derivedColumnNull pivot(groupBy(Size),",
+						"     pivotBy(Color),",
+						"     {avg } = avg(StandardCost),",
+						"     columnNaming: '$N_$VCalculatedCost',",
+						"     lateral: true) ~> PivotSize",
+						"SourceProduct derive(Size = iif(isNull(Size) || Size == 'NULL','NA',Size),",
+						"          Color = iif(isNull(Color) || Color == 'NULL','NA',Color)) ~> derivedColumnNull",
+						"PivotSize sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['PivotProduct.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> ProductSink"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/pivotproductdatset')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/StringifyDataTrans')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "demoJson",
+								"type": "DatasetReference"
+							},
+							"name": "sourceStringify"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SinkMSFTds",
+								"type": "DatasetReference"
+							},
+							"name": "sinkStringify"
+						}
+					],
+					"transformations": [
+						{
+							"name": "stringify"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          name as string,",
+						"          location as string,",
+						"          satellites as string[],",
+						"          goods as (trade as boolean, customers as string[], orders as (orderId as integer, orderTotal as double, shipped as (orderItems as (itemName as string, itemQty as integer)[]))[])",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     documentForm: 'singleDocument') ~> sourceStringify",
+						"sourceStringify stringify(AllOrders = goods.orders ? string,",
+						"     format: 'json') ~> stringify",
+						"stringify sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Car_id as string,",
+						"          Model as string,",
+						"          Colour as string,",
+						"          json_value as string,",
+						"          locationId as string,",
+						"          locationregion as string",
+						"     ),",
+						"     partitionFileNames:['MSFTSTringify.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          name,",
+						"          location,",
+						"          satellites,",
+						"          AllOrders",
+						"     ),",
+						"     partitionBy('hash', 1)) ~> sinkStringify"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/demoJson')]",
+				"[concat(variables('factoryId'), '/datasets/SinkMSFTds')]"
+			]
+		}
+	]
+}
