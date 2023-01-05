@@ -11,17 +11,41 @@
 		"Blobstroragefor2mintriggerLS_connectionString": {
 			"value": ""
 		},
+		"FileServerforzip_password": {
+			"value": ""
+		},
+		"FileServerfounzip_password": {
+			"value": ""
+		},
 		"OnPremServer_password": {
 			"value": ""
 		},
 		"blobstrDestifor2mintrgLS_connectionString": {
 			"value": ""
 		},
+		"gen2forzipls_accountKey": {
+			"value": ""
+		},
+		"FileServerforzip_properties_typeProperties_host": {
+			"value": "\\\\PavanVm1\\sampledata"
+		},
+		"FileServerforzip_properties_typeProperties_userId": {
+			"value": "pavanRG1"
+		},
+		"FileServerfounzip_properties_typeProperties_host": {
+			"value": "\\\\PavanVm1\\Data"
+		},
+		"FileServerfounzip_properties_typeProperties_userId": {
+			"value": "pavanRG1"
+		},
 		"OnPremServer_properties_typeProperties_host": {
 			"value": "\\\\PavanVm1\\Data\\FlightsAndWeather"
 		},
 		"OnPremServer_properties_typeProperties_userId": {
 			"value": "pavanRG1"
+		},
+		"gen2forzipls_properties_typeProperties_url": {
+			"value": "https://pavandatalakegen2.dfs.core.windows.net/"
 		},
 		"Trigger_4m0_properties_CopyOnPrem2AzurePipeline_parameters_windowStart": {
 			"value": "@trigger().scheduledTime"

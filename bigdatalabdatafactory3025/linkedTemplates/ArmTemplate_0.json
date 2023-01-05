@@ -15,13 +15,45 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'blobstrDestifor2mintrgLS'"
 		},
+		"gen2forzipls_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'gen2forzipls'"
+		},
 		"BlobStorageOutput_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'BlobStorageOutput'"
 		},
+		"FileServerforzip_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FileServerforzip'"
+		},
+		"FileServerfounzip_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FileServerfounzip'"
+		},
 		"OnPremServer_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'OnPremServer'"
+		},
+		"gen2forzipls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://pavandatalakegen2.dfs.core.windows.net/"
+		},
+		"FileServerforzip_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\PavanVm1\\sampledata"
+		},
+		"FileServerforzip_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "pavanRG1"
+		},
+		"FileServerfounzip_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\PavanVm1\\Data"
+		},
+		"FileServerfounzip_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "pavanRG1"
 		},
 		"OnPremServer_properties_typeProperties_host": {
 			"type": "string",
@@ -38,10 +70,6 @@
 		"Trigger_d5m_properties_pipeline_parameters_windowEnd": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowEndTime"
-		},
-		"Trigger_4m0_properties_CopyOnPrem2AzurePipeline_parameters_windowStart": {
-			"type": "string",
-			"defaultValue": "@trigger().scheduledTime"
 		}
 	},
 	"variables": {
@@ -70,6 +98,23 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('blobstrDestifor2mintrgLS_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/gen2forzipls')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('gen2forzipls_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('gen2forzipls_accountKey')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -129,6 +174,28 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/sinkdatasetforzip')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "gen2forzipls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "sampledata"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/gen2forzipls')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BlobStorageOutput')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -137,6 +204,54 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('BlobStorageOutput_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "bigdatagateway-adftraining",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/bigdatagateway-adftraining')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FileServerforzip')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('FileServerforzip_properties_typeProperties_host')]",
+					"userId": "[parameters('FileServerforzip_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('FileServerforzip_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "bigdatagateway-adftraining",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/bigdatagateway-adftraining')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FileServerfounzip')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('FileServerfounzip_properties_typeProperties_host')]",
+					"userId": "[parameters('FileServerfounzip_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('FileServerfounzip_password')]"
+					}
 				},
 				"connectVia": {
 					"referenceName": "bigdatagateway-adftraining",
@@ -484,6 +599,32 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/zipdatasetforunzip')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FileServerfounzip",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "sampledata.zip"
+					},
+					"compression": {
+						"type": "ZipDeflate",
+						"level": "Optimal"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FileServerfounzip')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/CopyOnPrem2AzurePipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -577,6 +718,75 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pipelineToUnZip')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy datafromfileserver",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings",
+									"compressionProperties": {
+										"type": "ZipDeflateReadSettings",
+										"preserveZipFileNameAsFolder": false
+									}
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "PreserveHierarchy"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "zipdatasetforunzip",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "sinkdatasetforzip",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/zipdatasetforunzip')]",
+				"[concat(variables('factoryId'), '/datasets/sinkdatasetforzip')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Trigger_d5m')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -608,46 +818,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/DeltaCopyFileFromBlobPipeline')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Trigger_4m0')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "CopyOnPrem2AzurePipeline",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"windowStart": "[parameters('Trigger_4m0_properties_CopyOnPrem2AzurePipeline_parameters_windowStart')]"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Month",
-						"interval": 1,
-						"startTime": "2023-01-01T12:00:00Z",
-						"timeZone": "UTC",
-						"schedule": {
-							"minutes": [
-								0
-							],
-							"hours": [
-								0
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/CopyOnPrem2AzurePipeline')]"
 			]
 		}
 	]

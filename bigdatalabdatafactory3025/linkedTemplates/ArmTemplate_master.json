@@ -15,6 +15,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Blobstroragefor2mintriggerLS'"
 		},
+		"FileServerforzip_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FileServerforzip'"
+		},
+		"FileServerfounzip_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FileServerfounzip'"
+		},
 		"OnPremServer_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'OnPremServer'"
@@ -23,6 +31,26 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'blobstrDestifor2mintrgLS'"
 		},
+		"gen2forzipls_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'gen2forzipls'"
+		},
+		"FileServerforzip_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\PavanVm1\\sampledata"
+		},
+		"FileServerforzip_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "pavanRG1"
+		},
+		"FileServerfounzip_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\PavanVm1\\Data"
+		},
+		"FileServerfounzip_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "pavanRG1"
+		},
 		"OnPremServer_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "\\\\PavanVm1\\Data\\FlightsAndWeather"
@@ -30,6 +58,10 @@
 		"OnPremServer_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "pavanRG1"
+		},
+		"gen2forzipls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://pavandatalakegen2.dfs.core.windows.net/"
 		},
 		"Trigger_4m0_properties_CopyOnPrem2AzurePipeline_parameters_windowStart": {
 			"type": "string",
@@ -76,11 +108,35 @@
 					"blobstrDestifor2mintrgLS_connectionString": {
 						"value": "[parameters('blobstrDestifor2mintrgLS_connectionString')]"
 					},
+					"gen2forzipls_accountKey": {
+						"value": "[parameters('gen2forzipls_accountKey')]"
+					},
 					"BlobStorageOutput_connectionString": {
 						"value": "[parameters('BlobStorageOutput_connectionString')]"
 					},
+					"FileServerforzip_password": {
+						"value": "[parameters('FileServerforzip_password')]"
+					},
+					"FileServerfounzip_password": {
+						"value": "[parameters('FileServerfounzip_password')]"
+					},
 					"OnPremServer_password": {
 						"value": "[parameters('OnPremServer_password')]"
+					},
+					"gen2forzipls_properties_typeProperties_url": {
+						"value": "[parameters('gen2forzipls_properties_typeProperties_url')]"
+					},
+					"FileServerforzip_properties_typeProperties_host": {
+						"value": "[parameters('FileServerforzip_properties_typeProperties_host')]"
+					},
+					"FileServerforzip_properties_typeProperties_userId": {
+						"value": "[parameters('FileServerforzip_properties_typeProperties_userId')]"
+					},
+					"FileServerfounzip_properties_typeProperties_host": {
+						"value": "[parameters('FileServerfounzip_properties_typeProperties_host')]"
+					},
+					"FileServerfounzip_properties_typeProperties_userId": {
+						"value": "[parameters('FileServerfounzip_properties_typeProperties_userId')]"
 					},
 					"OnPremServer_properties_typeProperties_host": {
 						"value": "[parameters('OnPremServer_properties_typeProperties_host')]"
@@ -93,13 +149,33 @@
 					},
 					"Trigger_d5m_properties_pipeline_parameters_windowEnd": {
 						"value": "[parameters('Trigger_d5m_properties_pipeline_parameters_windowEnd')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "bigdatalabdatafactory3025_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"Trigger_4m0_properties_CopyOnPrem2AzurePipeline_parameters_windowStart": {
 						"value": "[parameters('Trigger_4m0_properties_CopyOnPrem2AzurePipeline_parameters_windowStart')]"
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'bigdatalabdatafactory3025_ArmTemplate_0')]"
+			]
 		}
 	]
 }
