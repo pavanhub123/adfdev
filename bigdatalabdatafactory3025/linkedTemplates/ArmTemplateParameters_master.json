@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "bigdatalabdatafactory3025"
+		},
+		"BlobStorageOutput_connectionString": {
+			"value": ""
+		},
+		"Blobstroragefor2mintriggerLS_connectionString": {
+			"value": ""
+		},
+		"OnPremServer_password": {
+			"value": ""
+		},
+		"blobstrDestifor2mintrgLS_connectionString": {
+			"value": ""
+		},
+		"OnPremServer_properties_typeProperties_host": {
+			"value": "\\\\PavanVm1\\Data\\FlightsAndWeather"
+		},
+		"OnPremServer_properties_typeProperties_userId": {
+			"value": "pavanRG1"
+		},
+		"Trigger_4m0_properties_CopyOnPrem2AzurePipeline_parameters_windowStart": {
+			"value": "@trigger().scheduledTime"
+		},
+		"Trigger_d5m_properties_pipeline_parameters_windowStart": {
+			"value": "@trigger().outputs.windowStartTime"
+		},
+		"Trigger_d5m_properties_pipeline_parameters_windowEnd": {
+			"value": "@trigger().outputs.windowEndTime"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
