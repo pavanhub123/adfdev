@@ -12,7 +12,15 @@
 					"name": "sourcefromblob"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "sink",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "derivedColumn1"
@@ -53,8 +61,11 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> sourcefromblob",
-				"sourcefromblob derive(date = toDate(date,'yyyy-mm-dd'),",
-				"          time = ERROR_FUNCTION('')) ~> derivedColumn1"
+				"sourcefromblob derive(date = toDate(date,'yyyy-mm-dd')) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
