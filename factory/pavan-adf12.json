@@ -1,0 +1,9 @@
+{
+	"name": "pavan-adf12",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "393a4720-8161-4d80-afcd-bfb0392c7aac",
+		"tenantId": "10f8383d-6c67-407f-b0df-134f293f06df"
+	}
+}

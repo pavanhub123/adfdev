@@ -1,0 +1,24 @@
+{
+	"name": "Adls_Lego_Configuration",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adfstrlinkedservice1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "LegoConfigurationFile.csv",
+				"container": "legocontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

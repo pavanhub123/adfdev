@@ -1,0 +1,27 @@
+{
+	"name": "BinarySAmpleimageDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adfstrlinkedservice1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"container": "sampledata"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
