@@ -7,6 +7,14 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bigdatalabdatafactory3025"
 		},
+		"AzureBlobStoragewebservice_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStoragewebservice'"
+		},
+		"BLOBLS_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'BLOBLS'"
+		},
 		"BlobStorageOutput_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'BlobStorageOutput'"
@@ -51,6 +59,10 @@
 			"type": "string",
 			"defaultValue": "pavanRG1"
 		},
+		"HttpServerforwebserviceLS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
+		},
 		"OnPremServer_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "\\\\PavanVm1\\Data\\FlightsAndWeather"
@@ -58,6 +70,10 @@
 		"OnPremServer_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "pavanRG1"
+		},
+		"RestServiceforwebservice_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
 		},
 		"gen2forzipls_properties_typeProperties_url": {
 			"type": "string",
@@ -102,6 +118,12 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"AzureBlobStoragewebservice_connectionString": {
+						"value": "[parameters('AzureBlobStoragewebservice_connectionString')]"
+					},
+					"BLOBLS_connectionString": {
+						"value": "[parameters('BLOBLS_connectionString')]"
+					},
 					"Blobstroragefor2mintriggerLS_connectionString": {
 						"value": "[parameters('Blobstroragefor2mintriggerLS_connectionString')]"
 					},
@@ -123,6 +145,12 @@
 					"OnPremServer_password": {
 						"value": "[parameters('OnPremServer_password')]"
 					},
+					"HttpServerforwebserviceLS_properties_typeProperties_url": {
+						"value": "[parameters('HttpServerforwebserviceLS_properties_typeProperties_url')]"
+					},
+					"RestServiceforwebservice_properties_typeProperties_url": {
+						"value": "[parameters('RestServiceforwebservice_properties_typeProperties_url')]"
+					},
 					"gen2forzipls_properties_typeProperties_url": {
 						"value": "[parameters('gen2forzipls_properties_typeProperties_url')]"
 					},
@@ -143,12 +171,6 @@
 					},
 					"OnPremServer_properties_typeProperties_userId": {
 						"value": "[parameters('OnPremServer_properties_typeProperties_userId')]"
-					},
-					"Trigger_d5m_properties_pipeline_parameters_windowStart": {
-						"value": "[parameters('Trigger_d5m_properties_pipeline_parameters_windowStart')]"
-					},
-					"Trigger_d5m_properties_pipeline_parameters_windowEnd": {
-						"value": "[parameters('Trigger_d5m_properties_pipeline_parameters_windowEnd')]"
 					}
 				}
 			},
@@ -167,6 +189,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"Trigger_d5m_properties_pipeline_parameters_windowStart": {
+						"value": "[parameters('Trigger_d5m_properties_pipeline_parameters_windowStart')]"
+					},
+					"Trigger_d5m_properties_pipeline_parameters_windowEnd": {
+						"value": "[parameters('Trigger_d5m_properties_pipeline_parameters_windowEnd')]"
 					},
 					"Trigger_4m0_properties_CopyOnPrem2AzurePipeline_parameters_windowStart": {
 						"value": "[parameters('Trigger_4m0_properties_CopyOnPrem2AzurePipeline_parameters_windowStart')]"

@@ -7,6 +7,14 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bigdatalabdatafactory3025"
 		},
+		"AzureBlobStoragewebservice_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStoragewebservice'"
+		},
+		"BLOBLS_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'BLOBLS'"
+		},
 		"BlobStorageOutput_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'BlobStorageOutput'"
@@ -51,6 +59,10 @@
 			"type": "string",
 			"defaultValue": "pavanRG1"
 		},
+		"HttpServerforwebserviceLS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
+		},
 		"OnPremServer_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "\\\\PavanVm1\\Data\\FlightsAndWeather"
@@ -58,6 +70,10 @@
 		"OnPremServer_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "pavanRG1"
+		},
+		"RestServiceforwebservice_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
 		},
 		"gen2forzipls_properties_typeProperties_url": {
 			"type": "string",
@@ -267,6 +283,74 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceDataset_d5m')]",
 				"[concat(variables('factoryId'), '/datasets/DestinationDataset_d5m')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "restDS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "webservice",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/restDS')]",
+				"[concat(variables('factoryId'), '/datasets/webservice')]"
 			]
 		},
 		{
@@ -599,6 +683,73 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/datasetforwebservice')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HttpServerforwebserviceLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/HttpServerforwebserviceLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/restDS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestServiceforwebservice",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/RestServiceforwebservice')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BLOBLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "destination"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BLOBLS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/sinkdatasetforzip')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -618,6 +769,178 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/gen2forzipls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/webservice')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStoragewebservice",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "source"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStoragewebservice')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/webservivefromblobsource')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BLOBLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "data_798df4b9-e1ed-4ffd-a356-1e305680ce2f_2fae057d-fce4-4868-8781-97f4fdc3fd29.txt",
+						"container": "source"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "case_number",
+						"type": "String"
+					},
+					{
+						"name": "date",
+						"type": "String"
+					},
+					{
+						"name": "block",
+						"type": "String"
+					},
+					{
+						"name": "iucr",
+						"type": "String"
+					},
+					{
+						"name": "primary_type",
+						"type": "String"
+					},
+					{
+						"name": "description",
+						"type": "String"
+					},
+					{
+						"name": "location_description",
+						"type": "String"
+					},
+					{
+						"name": "arrest",
+						"type": "String"
+					},
+					{
+						"name": "domestic",
+						"type": "String"
+					},
+					{
+						"name": "beat",
+						"type": "String"
+					},
+					{
+						"name": "district",
+						"type": "String"
+					},
+					{
+						"name": "ward",
+						"type": "String"
+					},
+					{
+						"name": "community_area",
+						"type": "String"
+					},
+					{
+						"name": "fbi_code",
+						"type": "String"
+					},
+					{
+						"name": "x_coordinate",
+						"type": "String"
+					},
+					{
+						"name": "y_coordinate",
+						"type": "String"
+					},
+					{
+						"name": "year",
+						"type": "String"
+					},
+					{
+						"name": "updated_on",
+						"type": "String"
+					},
+					{
+						"name": "latitude",
+						"type": "String"
+					},
+					{
+						"name": "longitude",
+						"type": "String"
+					},
+					{
+						"name": ":@computed_region_awaf_s7ux",
+						"type": "String"
+					},
+					{
+						"name": ":@computed_region_6mkv_f3dw",
+						"type": "String"
+					},
+					{
+						"name": ":@computed_region_vrxf_vc4k",
+						"type": "String"
+					},
+					{
+						"name": ":@computed_region_bdys_3d7i",
+						"type": "String"
+					},
+					{
+						"name": ":@computed_region_43wa_7qmu",
+						"type": "String"
+					},
+					{
+						"name": ":@computed_region_rpca_8um6",
+						"type": "String"
+					},
+					{
+						"name": ":@computed_region_d9mm_jgwp",
+						"type": "String"
+					},
+					{
+						"name": ":@computed_region_d3ds_rm58",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BLOBLS')]"
 			]
 		},
 		{
@@ -645,6 +968,32 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/FileServerfounzip')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStoragewebservice')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStoragewebservice_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BLOBLS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('BLOBLS_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/BlobStorageOutput')]",
@@ -727,6 +1076,21 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/HttpServerforwebserviceLS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('HttpServerforwebserviceLS_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/OnPremServer')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -749,6 +1113,21 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/bigdatagateway-adftraining')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestServiceforwebservice')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestServiceforwebservice_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/blobstrDestifor2mintrgLS')]",
@@ -863,6 +1242,84 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "webservivefromblobsource",
+								"type": "DatasetReference"
+							},
+							"name": "sourcefromblob"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "sink",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          id as string,",
+						"          case_number as string,",
+						"          date as string,",
+						"          block as string,",
+						"          iucr as string,",
+						"          primary_type as string,",
+						"          description as string,",
+						"          location_description as string,",
+						"          arrest as string,",
+						"          domestic as string,",
+						"          beat as string,",
+						"          district as string,",
+						"          ward as string,",
+						"          community_area as string,",
+						"          fbi_code as string,",
+						"          x_coordinate as string,",
+						"          y_coordinate as string,",
+						"          year as string,",
+						"          updated_on as string,",
+						"          latitude as string,",
+						"          longitude as string,",
+						"          {:@computed_region_awaf_s7ux} as string,",
+						"          {:@computed_region_6mkv_f3dw} as string,",
+						"          {:@computed_region_vrxf_vc4k} as string,",
+						"          {:@computed_region_bdys_3d7i} as string,",
+						"          {:@computed_region_43wa_7qmu} as string,",
+						"          {:@computed_region_rpca_8um6} as string,",
+						"          {:@computed_region_d9mm_jgwp} as string,",
+						"          {:@computed_region_d3ds_rm58} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> sourcefromblob",
+						"sourcefromblob derive(date = toDate(date,'yyyy-mm-dd')) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/webservivefromblobsource')]",
+				"[concat(variables('factoryId'), '/datasets/sink')]"
+			]
 		}
 	]
 }

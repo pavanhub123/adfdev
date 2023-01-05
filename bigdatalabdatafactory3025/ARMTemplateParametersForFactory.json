@@ -5,6 +5,12 @@
 		"factoryName": {
 			"value": "bigdatalabdatafactory3025"
 		},
+		"AzureBlobStoragewebservice_connectionString": {
+			"value": ""
+		},
+		"BLOBLS_connectionString": {
+			"value": ""
+		},
 		"BlobStorageOutput_connectionString": {
 			"value": ""
 		},
@@ -38,11 +44,17 @@
 		"FileServerfounzip_properties_typeProperties_userId": {
 			"value": "pavanRG1"
 		},
+		"HttpServerforwebserviceLS_properties_typeProperties_url": {
+			"value": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
+		},
 		"OnPremServer_properties_typeProperties_host": {
 			"value": "\\\\PavanVm1\\Data\\FlightsAndWeather"
 		},
 		"OnPremServer_properties_typeProperties_userId": {
 			"value": "pavanRG1"
+		},
+		"RestServiceforwebservice_properties_typeProperties_url": {
+			"value": "https://data.cityofchicago.org/resource/crimes.json?$limit=50000"
 		},
 		"gen2forzipls_properties_typeProperties_url": {
 			"value": "https://pavandatalakegen2.dfs.core.windows.net/"
