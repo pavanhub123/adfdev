@@ -1,0 +1,61 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "webservivefromblobsource",
+						"type": "DatasetReference"
+					},
+					"name": "sourcefromblob"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          case_number as string,",
+				"          date as string,",
+				"          block as string,",
+				"          iucr as string,",
+				"          primary_type as string,",
+				"          description as string,",
+				"          location_description as string,",
+				"          arrest as string,",
+				"          domestic as string,",
+				"          beat as string,",
+				"          district as string,",
+				"          ward as string,",
+				"          community_area as string,",
+				"          fbi_code as string,",
+				"          x_coordinate as string,",
+				"          y_coordinate as string,",
+				"          year as string,",
+				"          updated_on as string,",
+				"          latitude as string,",
+				"          longitude as string,",
+				"          {:@computed_region_awaf_s7ux} as string,",
+				"          {:@computed_region_6mkv_f3dw} as string,",
+				"          {:@computed_region_vrxf_vc4k} as string,",
+				"          {:@computed_region_bdys_3d7i} as string,",
+				"          {:@computed_region_43wa_7qmu} as string,",
+				"          {:@computed_region_rpca_8um6} as string,",
+				"          {:@computed_region_d9mm_jgwp} as string,",
+				"          {:@computed_region_d3ds_rm58} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourcefromblob",
+				"sourcefromblob derive(date = toDate(date,'yyyy-mm-dd'),",
+				"          time = ERROR_FUNCTION('')) ~> derivedColumn1"
+			]
+		}
+	}
+}

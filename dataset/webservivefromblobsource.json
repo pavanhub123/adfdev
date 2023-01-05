@@ -1,0 +1,140 @@
+{
+	"name": "webservivefromblobsource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BLOBLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "data_798df4b9-e1ed-4ffd-a356-1e305680ce2f_2fae057d-fce4-4868-8781-97f4fdc3fd29.txt",
+				"container": "source"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "case_number",
+				"type": "String"
+			},
+			{
+				"name": "date",
+				"type": "String"
+			},
+			{
+				"name": "block",
+				"type": "String"
+			},
+			{
+				"name": "iucr",
+				"type": "String"
+			},
+			{
+				"name": "primary_type",
+				"type": "String"
+			},
+			{
+				"name": "description",
+				"type": "String"
+			},
+			{
+				"name": "location_description",
+				"type": "String"
+			},
+			{
+				"name": "arrest",
+				"type": "String"
+			},
+			{
+				"name": "domestic",
+				"type": "String"
+			},
+			{
+				"name": "beat",
+				"type": "String"
+			},
+			{
+				"name": "district",
+				"type": "String"
+			},
+			{
+				"name": "ward",
+				"type": "String"
+			},
+			{
+				"name": "community_area",
+				"type": "String"
+			},
+			{
+				"name": "fbi_code",
+				"type": "String"
+			},
+			{
+				"name": "x_coordinate",
+				"type": "String"
+			},
+			{
+				"name": "y_coordinate",
+				"type": "String"
+			},
+			{
+				"name": "year",
+				"type": "String"
+			},
+			{
+				"name": "updated_on",
+				"type": "String"
+			},
+			{
+				"name": "latitude",
+				"type": "String"
+			},
+			{
+				"name": "longitude",
+				"type": "String"
+			},
+			{
+				"name": ":@computed_region_awaf_s7ux",
+				"type": "String"
+			},
+			{
+				"name": ":@computed_region_6mkv_f3dw",
+				"type": "String"
+			},
+			{
+				"name": ":@computed_region_vrxf_vc4k",
+				"type": "String"
+			},
+			{
+				"name": ":@computed_region_bdys_3d7i",
+				"type": "String"
+			},
+			{
+				"name": ":@computed_region_43wa_7qmu",
+				"type": "String"
+			},
+			{
+				"name": ":@computed_region_rpca_8um6",
+				"type": "String"
+			},
+			{
+				"name": ":@computed_region_d9mm_jgwp",
+				"type": "String"
+			},
+			{
+				"name": ":@computed_region_d3ds_rm58",
+				"type": "String"
+			}
+		]
+	}
+}
