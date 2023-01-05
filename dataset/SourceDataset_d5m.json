@@ -1,0 +1,18 @@
+{
+	"name": "SourceDataset_d5m",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blobstroragefor2mintriggerLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "source"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

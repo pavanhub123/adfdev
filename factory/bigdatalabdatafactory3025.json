@@ -1,0 +1,9 @@
+{
+	"name": "bigdatalabdatafactory3025",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "41c8f137-6372-43c1-b311-715e28f5dd25",
+		"tenantId": "10f8383d-6c67-407f-b0df-134f293f06df"
+	}
+}

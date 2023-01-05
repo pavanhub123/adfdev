@@ -1,0 +1,17 @@
+{
+	"name": "OnPremServer",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "\\\\PavanVm1\\Data\\FlightsAndWeather",
+			"userId": "pavanRG1",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiNmJlMGU3ZC0yMTA0LTQyMDYtOGMxYi05ZTg5ZDg4NmU4ZGYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "bigdatagateway-adftraining",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
