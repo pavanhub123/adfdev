@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Blobstroragefor2mintriggerLS'"
 		},
+		"ChicagoLS_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ChicagoLS'"
+		},
 		"blobstrDestifor2mintrgLS_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'blobstrDestifor2mintrgLS'"
@@ -34,14 +38,6 @@
 		"FileServerforzip_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FileServerforzip'"
-		},
-		"FileServerfounzip_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'FileServerfounzip'"
-		},
-		"OnPremServer_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'OnPremServer'"
 		},
 		"HttpServerforwebserviceLS_properties_typeProperties_url": {
 			"type": "string",
@@ -60,22 +56,6 @@
 			"defaultValue": "\\\\PavanVm1\\sampledata"
 		},
 		"FileServerforzip_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "pavanRG1"
-		},
-		"FileServerfounzip_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "\\\\PavanVm1\\Data"
-		},
-		"FileServerfounzip_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "pavanRG1"
-		},
-		"OnPremServer_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "\\\\PavanVm1\\Data\\FlightsAndWeather"
-		},
-		"OnPremServer_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "pavanRG1"
 		}
@@ -119,6 +99,19 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('Blobstroragefor2mintriggerLS_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ChicagoLS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('ChicagoLS_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -235,6 +228,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Blobstroragefor2mintriggerLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/chicagoDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ChicagoLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "chicago"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ChicagoLS')]"
 			]
 		},
 		{
@@ -530,54 +544,6 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('FileServerforzip_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "bigdatagateway-adftraining",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/bigdatagateway-adftraining')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FileServerfounzip')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FileServer",
-				"typeProperties": {
-					"host": "[parameters('FileServerfounzip_properties_typeProperties_host')]",
-					"userId": "[parameters('FileServerfounzip_properties_typeProperties_userId')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('FileServerfounzip_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "bigdatagateway-adftraining",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/bigdatagateway-adftraining')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OnPremServer')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FileServer",
-				"typeProperties": {
-					"host": "[parameters('OnPremServer_properties_typeProperties_host')]",
-					"userId": "[parameters('OnPremServer_properties_typeProperties_userId')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('OnPremServer_password')]"
 					}
 				},
 				"connectVia": {

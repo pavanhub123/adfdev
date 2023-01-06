@@ -7,6 +7,30 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "bigdatalabdatafactory3025"
 		},
+		"FileServerfounzip_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FileServerfounzip'"
+		},
+		"OnPremServer_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'OnPremServer'"
+		},
+		"FileServerfounzip_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\PavanVm1\\Data"
+		},
+		"FileServerfounzip_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "pavanRG1"
+		},
+		"OnPremServer_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\PavanVm1\\Data\\FlightsAndWeather"
+		},
+		"OnPremServer_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "pavanRG1"
+		},
 		"Trigger_d5m_properties_pipeline_parameters_windowStart": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
@@ -24,6 +48,50 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/FileServerfounzip')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('FileServerfounzip_properties_typeProperties_host')]",
+					"userId": "[parameters('FileServerfounzip_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('FileServerfounzip_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "bigdatagateway-adftraining",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OnPremServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('OnPremServer_properties_typeProperties_host')]",
+					"userId": "[parameters('OnPremServer_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('OnPremServer_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "bigdatagateway-adftraining",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DeltaCopyFileFromBlobPipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -319,7 +387,9 @@
 					}
 				]
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/OnPremServer')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SourceDataset_g9h')]",
@@ -388,7 +458,9 @@
 					}
 				]
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/OnPremServer')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/zipdatasetforunzip')]",
@@ -412,10 +484,12 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FileServerfounzip')]"
+			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"name": "[concat(parameters('factoryName'), '/chicagodataflow')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -433,57 +507,77 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "sink",
+								"referenceName": "chicagoDataset",
 								"type": "DatasetReference"
 							},
-							"name": "sink1"
+							"name": "sinkchicago"
 						}
 					],
 					"transformations": [
 						{
 							"name": "derivedColumn1"
+						},
+						{
+							"name": "filterforchicago"
+						},
+						{
+							"name": "aggregateforchicago"
 						}
 					],
 					"scriptLines": [
 						"source(output(",
-						"          id as string,",
+						"          id as integer,",
 						"          case_number as string,",
-						"          date as string,",
+						"          date as timestamp 'yyyy-MM-dd\\'T\\'HH:mm:ss',",
 						"          block as string,",
 						"          iucr as string,",
 						"          primary_type as string,",
 						"          description as string,",
 						"          location_description as string,",
-						"          arrest as string,",
-						"          domestic as string,",
-						"          beat as string,",
-						"          district as string,",
-						"          ward as string,",
-						"          community_area as string,",
+						"          arrest as boolean,",
+						"          domestic as boolean,",
+						"          beat as short,",
+						"          district as short,",
+						"          ward as short,",
+						"          community_area as short,",
 						"          fbi_code as string,",
-						"          x_coordinate as string,",
-						"          y_coordinate as string,",
-						"          year as string,",
+						"          x_coordinate as integer,",
+						"          y_coordinate as integer,",
+						"          year as short,",
 						"          updated_on as string,",
-						"          latitude as string,",
-						"          longitude as string,",
-						"          {:@computed_region_awaf_s7ux} as string,",
-						"          {:@computed_region_6mkv_f3dw} as string,",
-						"          {:@computed_region_vrxf_vc4k} as string,",
-						"          {:@computed_region_bdys_3d7i} as string,",
-						"          {:@computed_region_43wa_7qmu} as string,",
-						"          {:@computed_region_rpca_8um6} as string,",
-						"          {:@computed_region_d9mm_jgwp} as string,",
-						"          {:@computed_region_d3ds_rm58} as string",
+						"          latitude as double,",
+						"          longitude as double,",
+						"          {:@computed_region_awaf_s7ux} as short,",
+						"          {:@computed_region_6mkv_f3dw} as short,",
+						"          {:@computed_region_vrxf_vc4k} as short,",
+						"          {:@computed_region_bdys_3d7i} as short,",
+						"          {:@computed_region_43wa_7qmu} as short,",
+						"          {:@computed_region_rpca_8um6} as short,",
+						"          {:@computed_region_d9mm_jgwp} as short,",
+						"          {:@computed_region_d3ds_rm58} as short",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> sourcefromblob",
-						"sourcefromblob derive(date = toDate(date,'yyyy-mm-dd')) ~> derivedColumn1",
-						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"sourcefromblob derive(Date = toString(date, 'yyyy-MM-dd'),",
+						"          Time = toString(date,'HH:mm:ss.SSS')) ~> derivedColumn1",
+						"aggregateforchicago filter(year==2022) ~> filterforchicago",
+						"derivedColumn1 aggregate(groupBy(iucr,",
+						"          year,",
+						"          derivedColumn1@Date,",
+						"          Time,",
+						"          dayofweek = dayOfWeek(sourcefromblob@date)),",
+						"     count = count(iucr)) ~> aggregateforchicago",
+						"filterforchicago sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkchicago"
 					]
 				}
 			},
@@ -580,6 +674,53 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceDataset_4m0')]",
 				"[concat(variables('factoryId'), '/datasets/DestinationDataset_4m0')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/chicagopipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flowfor chicago",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "chicagodataflow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"sourcefromblob": {},
+									"sinkchicago": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/chicagodataflow')]"
 			]
 		},
 		{

@@ -23,6 +23,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Blobstroragefor2mintriggerLS'"
 		},
+		"ChicagoLS_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ChicagoLS'"
+		},
 		"FileServerforzip_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FileServerforzip'"
@@ -127,6 +131,9 @@
 					"Blobstroragefor2mintriggerLS_connectionString": {
 						"value": "[parameters('Blobstroragefor2mintriggerLS_connectionString')]"
 					},
+					"ChicagoLS_connectionString": {
+						"value": "[parameters('ChicagoLS_connectionString')]"
+					},
 					"blobstrDestifor2mintrgLS_connectionString": {
 						"value": "[parameters('blobstrDestifor2mintrgLS_connectionString')]"
 					},
@@ -138,12 +145,6 @@
 					},
 					"FileServerforzip_password": {
 						"value": "[parameters('FileServerforzip_password')]"
-					},
-					"FileServerfounzip_password": {
-						"value": "[parameters('FileServerfounzip_password')]"
-					},
-					"OnPremServer_password": {
-						"value": "[parameters('OnPremServer_password')]"
 					},
 					"HttpServerforwebserviceLS_properties_typeProperties_url": {
 						"value": "[parameters('HttpServerforwebserviceLS_properties_typeProperties_url')]"
@@ -159,18 +160,6 @@
 					},
 					"FileServerforzip_properties_typeProperties_userId": {
 						"value": "[parameters('FileServerforzip_properties_typeProperties_userId')]"
-					},
-					"FileServerfounzip_properties_typeProperties_host": {
-						"value": "[parameters('FileServerfounzip_properties_typeProperties_host')]"
-					},
-					"FileServerfounzip_properties_typeProperties_userId": {
-						"value": "[parameters('FileServerfounzip_properties_typeProperties_userId')]"
-					},
-					"OnPremServer_properties_typeProperties_host": {
-						"value": "[parameters('OnPremServer_properties_typeProperties_host')]"
-					},
-					"OnPremServer_properties_typeProperties_userId": {
-						"value": "[parameters('OnPremServer_properties_typeProperties_userId')]"
 					}
 				}
 			},
@@ -189,6 +178,24 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"FileServerfounzip_password": {
+						"value": "[parameters('FileServerfounzip_password')]"
+					},
+					"OnPremServer_password": {
+						"value": "[parameters('OnPremServer_password')]"
+					},
+					"FileServerfounzip_properties_typeProperties_host": {
+						"value": "[parameters('FileServerfounzip_properties_typeProperties_host')]"
+					},
+					"FileServerfounzip_properties_typeProperties_userId": {
+						"value": "[parameters('FileServerfounzip_properties_typeProperties_userId')]"
+					},
+					"OnPremServer_properties_typeProperties_host": {
+						"value": "[parameters('OnPremServer_properties_typeProperties_host')]"
+					},
+					"OnPremServer_properties_typeProperties_userId": {
+						"value": "[parameters('OnPremServer_properties_typeProperties_userId')]"
 					},
 					"Trigger_d5m_properties_pipeline_parameters_windowStart": {
 						"value": "[parameters('Trigger_d5m_properties_pipeline_parameters_windowStart')]"

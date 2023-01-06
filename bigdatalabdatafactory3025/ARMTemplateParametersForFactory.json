@@ -17,6 +17,9 @@
 		"Blobstroragefor2mintriggerLS_connectionString": {
 			"value": ""
 		},
+		"ChicagoLS_connectionString": {
+			"value": ""
+		},
 		"FileServerforzip_password": {
 			"value": ""
 		},
