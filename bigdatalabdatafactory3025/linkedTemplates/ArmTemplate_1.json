@@ -186,7 +186,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"name": "[concat(parameters('factoryName'), '/pipelineforcopychicago')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -685,7 +685,14 @@
 					{
 						"name": "Data flowfor chicago",
 						"type": "ExecuteDataFlow",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Execute Pipelineforchicago",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -711,6 +718,20 @@
 							},
 							"traceLevel": "Fine"
 						}
+					},
+					{
+						"name": "Execute Pipelineforchicago",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pipelineforcopychicago",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"policy": {
@@ -720,7 +741,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/chicagodataflow')]"
+				"[concat(variables('factoryId'), '/dataflows/chicagodataflow')]",
+				"[concat(variables('factoryId'), '/pipelines/pipelineforcopychicago')]"
 			]
 		},
 		{

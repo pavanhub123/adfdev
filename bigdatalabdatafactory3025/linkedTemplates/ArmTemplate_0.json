@@ -354,6 +354,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": "chicagodata.csv",
 						"container": "source"
 					},
 					"columnDelimiter": ",",
@@ -381,7 +382,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "data_798df4b9-e1ed-4ffd-a356-1e305680ce2f_2fae057d-fce4-4868-8781-97f4fdc3fd29.txt",
+						"fileName": "chicagodata.csv",
 						"container": "source"
 					},
 					"columnDelimiter": ",",
