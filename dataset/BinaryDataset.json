@@ -1,0 +1,18 @@
+{
+	"name": "BinaryDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStoragels",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "storage-image"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

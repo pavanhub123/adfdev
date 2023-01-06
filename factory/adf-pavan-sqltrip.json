@@ -1,0 +1,9 @@
+{
+	"name": "adf-pavan-sqltrip",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "17236a78-af61-41d1-9b7e-968ce2c984e3",
+		"tenantId": "10f8383d-6c67-407f-b0df-134f293f06df"
+	}
+}
