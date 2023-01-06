@@ -1,0 +1,16 @@
+{
+	"name": "chicagoDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ChicagoLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "chicago"
+		}
+	}
+}

@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "chicagodataflow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -15,57 +15,77 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "sink",
+						"referenceName": "chicagoDataset",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "sinkchicago"
 				}
 			],
 			"transformations": [
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "filterforchicago"
+				},
+				{
+					"name": "aggregateforchicago"
 				}
 			],
 			"scriptLines": [
 				"source(output(",
-				"          id as string,",
+				"          id as integer,",
 				"          case_number as string,",
-				"          date as string,",
+				"          date as timestamp 'yyyy-MM-dd\\'T\\'HH:mm:ss',",
 				"          block as string,",
 				"          iucr as string,",
 				"          primary_type as string,",
 				"          description as string,",
 				"          location_description as string,",
-				"          arrest as string,",
-				"          domestic as string,",
-				"          beat as string,",
-				"          district as string,",
-				"          ward as string,",
-				"          community_area as string,",
+				"          arrest as boolean,",
+				"          domestic as boolean,",
+				"          beat as short,",
+				"          district as short,",
+				"          ward as short,",
+				"          community_area as short,",
 				"          fbi_code as string,",
-				"          x_coordinate as string,",
-				"          y_coordinate as string,",
-				"          year as string,",
+				"          x_coordinate as integer,",
+				"          y_coordinate as integer,",
+				"          year as short,",
 				"          updated_on as string,",
-				"          latitude as string,",
-				"          longitude as string,",
-				"          {:@computed_region_awaf_s7ux} as string,",
-				"          {:@computed_region_6mkv_f3dw} as string,",
-				"          {:@computed_region_vrxf_vc4k} as string,",
-				"          {:@computed_region_bdys_3d7i} as string,",
-				"          {:@computed_region_43wa_7qmu} as string,",
-				"          {:@computed_region_rpca_8um6} as string,",
-				"          {:@computed_region_d9mm_jgwp} as string,",
-				"          {:@computed_region_d3ds_rm58} as string",
+				"          latitude as double,",
+				"          longitude as double,",
+				"          {:@computed_region_awaf_s7ux} as short,",
+				"          {:@computed_region_6mkv_f3dw} as short,",
+				"          {:@computed_region_vrxf_vc4k} as short,",
+				"          {:@computed_region_bdys_3d7i} as short,",
+				"          {:@computed_region_43wa_7qmu} as short,",
+				"          {:@computed_region_rpca_8um6} as short,",
+				"          {:@computed_region_d9mm_jgwp} as short,",
+				"          {:@computed_region_d3ds_rm58} as short",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> sourcefromblob",
-				"sourcefromblob derive(date = toDate(date,'yyyy-mm-dd')) ~> derivedColumn1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"sourcefromblob derive(Date = toString(date, 'yyyy-MM-dd'),",
+				"          Time = toString(date,'HH:mm:ss.SSS')) ~> derivedColumn1",
+				"aggregateforchicago filter(year==2022) ~> filterforchicago",
+				"derivedColumn1 aggregate(groupBy(iucr,",
+				"          year,",
+				"          derivedColumn1@Date,",
+				"          Time,",
+				"          dayofweek = dayOfWeek(sourcefromblob@date)),",
+				"     count = count(iucr)) ~> aggregateforchicago",
+				"filterforchicago sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sinkchicago"
 			]
 		}
 	}
