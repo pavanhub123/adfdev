@@ -1,0 +1,20 @@
+{
+	"name": "1_explore_taxi_zone",
+	"properties": {
+		"folder": {
+			"name": "Demo/nyc_taxi/discovery"
+		},
+		"content": {
+			"query": "-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://pavangen2.dfs.core.windows.net/nyc-taxidata/raw/taxi_zone.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION = '2.0'\n    ) AS [result]\n\n\n\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'abfss://nyc-taxidata@pavangen2.dfs.core.windows.net/raw/taxi_zone.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION = '2.0',\n        HEADER_ROW = TRUE ,\n        FIELDTERMINATOR = ',',\n        ROWTERMINATOR = '\\n'\n       \n    ) AS [result]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
